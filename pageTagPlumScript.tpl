@@ -8,6 +8,6 @@
  *
  *}
 <!-- Plum Analytics -->
-<script type="text/javascript" src="http://d1x9wcvwqf6hm1.cloudfront.net/w/js/{$version|escape:'url'}/widgets.js"></script>
+<script type="text/javascript" src="//d39af2mgp1pqhg.cloudfront.net/widget-all.js"></script>
 <!-- /Plum Analytics -->
 

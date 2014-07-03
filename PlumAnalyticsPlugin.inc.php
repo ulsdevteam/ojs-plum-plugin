@@ -22,11 +22,19 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 * _all is applied to each widget types; other array keys define widget types.
 	 */
 	public $settingsByWidgetType = array(
-		'_all' => array('widgetType', 'version'),
-		'plumx-artifact' => array(),
-		'plumx-artifact-metrics' => array('width', 'showTitle', 'showAuthor', 'hideWhenEmpty'),
-		'plumx-artifact-metrics-popup' => array('width', 'showTitle', 'showAuthor', 'alignment'),
-		'plumx-artifact-categories' => array('width', 'showTitle', 'showAuthor'),
+		'_all' => array('widgetType', 'hideWhenEmpty'),
+		'plumx-plum-print-popup' => array('popup'),
+		'plumx-summary' => array('orientation', 'hidePrint'),
+		'plumx-details' => array('width', 'border', 'hidePrint'),
+	);
+	
+	/**
+	 * @var $valuesByWidgetSetting array()
+	 *  This array associates widget settings with the possible widget values options
+	 */
+	public $valuesByWidgetSetting = array(
+		'popup' => array('top', 'bottom', 'left', 'right'),
+		'orientation' => array('vertical', 'horizontal'),
 	);
 
 
@@ -48,33 +56,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		}
 		return $success;
 	}
-
+	
 	function getDisplayName() {
 		return __('plugins.generic.plumAnalytics.displayName');
 	}
 
 	function getDescription() {
 		return __('plugins.generic.plumAnalytics.description');
-	}
-
-	/**
-	 * Extend the {url ...} smarty to support this plugin.
-	 */
-	function smartyPluginUrl($params, &$smarty) {
-		$path = array($this->getCategory(), $this->getName());
-		if (is_array($params['path'])) {
-			$params['path'] = array_merge($path, $params['path']);
-		} elseif (!empty($params['path'])) {
-			$params['path'] = array_merge($path, array($params['path']));
-		} else {
-			$params['path'] = $path;
-		}
-
-		if (!empty($params['id'])) {
-			$params['path'] = array_merge($params['path'], array($params['id']));
-			unset($params['id']);
-		}
-		return $smarty->smartyUrl($params, $smarty);
 	}
 
 	/**
@@ -99,10 +87,15 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 				Request::url(null, 'manager', 'plugins'),
 				'manager.plugins'
 			);
+			$pageCrumbs[] = array(
+				Request::url(null, 'manager', 'plugins', 'generic'),
+				'plugins.categories.generic'
+			);
 		}
 
 		$templateMgr->assign('pageHierarchy', $pageCrumbs);
 	}
+
 
 	/**
 	 * Display verbs for the management interface.
@@ -163,9 +156,9 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 					foreach ($this->settingsByWidgetType[$this->getSetting($journalId, 'widgetType')] as $k) {
 						$templateMgr->assign($k, $this->getSetting($journalId, $k));
 					}
-					$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');							   
+					$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
 				}
-			}  
+			}
 
 		}
 		return false;
@@ -180,7 +173,14 @@ class PlumAnalyticsPlugin extends GenericPlugin {
  	 * @return boolean
  	 */
 	function manage($verb, $args, &$message, &$messageParams) {
-		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
+		if (!parent::manage($verb, $args, $message, $messageParams)) {
+			// If enabling this plugin, go directly to the settings
+			if ($verb == 'enable') {
+				$verb = 'settings';
+			} else {
+				return false;
+			}
+		}
 
 		switch ($verb) {
 			case 'settings':
@@ -190,13 +190,22 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 
 				$this->import('PlumAnalyticsSettingsForm');
 				$form = new PlumAnalyticsSettingsForm($this, $journal->getId());
-				$templateMgr->assign('alignments', $form->alignments);
+				// This assigns select options
+				foreach ($form->options as $k => $v) {
+					$templateMgr->assign($k.'Types', $v);
+				}
 				$templateMgr->assign('widgetTypes', $form->widgetTypes);
+				$templateMgr->assign('allPlumWidgetSettings', $form->settingsKeys);
+				$templateMgr->assign('validPlumWidgetSettings', $this->settingsByWidgetType);
 				if (Request::getUserVar('save')) {
 					$form->readInputData();
 					if ($form->validate()) {
 						$form->execute();
-						Request::redirect(null, 'manager', 'plugin');
+						$user =& Request::getUser();
+						import('classes.notification.NotificationManager');
+						$notificationManager = new NotificationManager();
+						$notificationManager->createTrivialNotification($user->getId());
+						Request::redirect(null, 'manager', 'plugins', 'generic');
 						return false;
 					} else {
 						$this->setBreadCrumbs(true);

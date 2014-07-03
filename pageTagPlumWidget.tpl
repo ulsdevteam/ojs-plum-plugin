@@ -8,6 +8,6 @@
  *
  *}
 <!-- Plum Analytics -->
-<div class="plumx-widget" plumx-widget-type="{$widgetType|escape}" doi="{$articleDOI|escape}" {if $hideWhenEmpty}hide-when-empty="{$hideWhenEmpty|escape}" {/if}{if $showTitle}show-title="{$showTitle|escape}" {/if}{if $showAuthor}show-author="{$showAuthor|escape}" {/if}{if $width}width="{$width|escape}{/if}"></div>
+<a href="https://plu.mx/a/?doi={$articleDOI|escape}" class="{$widgetType|escape}" {if $hideWhenEmpty}data-hide-when-empty="{$hideWhenEmpty|escape}" {/if}{if $h}data-hide-print="{$hidePrint|escape}" {/if}{if $orientation}data-orientation="{$orientation|escape}" {/if}{if $popup}data-popup="{$popup|escape}" {/if}{if $border}data-border="{$border|escape}"{/if}{if $width}data-width="{$width|escape}"{/if}></a>
 <!-- /Plum Analytics -->
 
