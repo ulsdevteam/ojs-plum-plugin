@@ -46,7 +46,7 @@ class PlumAnalyticsSettingsForm extends Form {
 		$this->settingsKeys = array();
 		$this->widgetTypes[''] = '';
 		foreach ($plugin->settingsByWidgetType as $k => $v) {
-			$this->widgetTypes[$k] = __('plugins.generic.plumAnalytics.manager.settings.widgetType.'.$k);
+			$this->widgetTypes[$k] = 'plugins.generic.plumAnalytics.manager.settings.widgetType.'.$k;
 			$this->settingsKeys = array_merge($this->settingsKeys, $v);
 		}
 		unset($this->widgetTypes['_all']);
@@ -54,10 +54,7 @@ class PlumAnalyticsSettingsForm extends Form {
 		// Set options for popup alignment
 		$this->options = array();
 		foreach ($plugin->valuesByWidgetSetting as $k => $v) {
-			$this->options[$k][''] = '';
-			foreach ($v as $val) {
-				$this->options[$k][$val] = __('plugins.generic.plumAnalytics.manager.settings.'.$k.'.'.$val);
-			}
+			$this->options[$k] = array_merge(array('' => ''), $v);
 		}
 		
 		parent::Form($plugin->getTemplatePath() . 'settingsForm.tpl');

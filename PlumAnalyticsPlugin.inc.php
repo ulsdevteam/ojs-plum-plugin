@@ -33,8 +33,16 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 *  This array associates widget settings with the possible widget values options
 	 */
 	public $valuesByWidgetSetting = array(
-		'popup' => array('top', 'bottom', 'left', 'right'),
-		'orientation' => array('vertical', 'horizontal'),
+		'popup' => array(
+			'top' => 'plugins.generic.plumAnalytics.manager.settings.popup.top',
+			'bottom' => 'plugins.generic.plumAnalytics.manager.settings.popup.bottom',
+			'left' => 'plugins.generic.plumAnalytics.manager.settings.popup.left',
+			'right' => 'plugins.generic.plumAnalytics.manager.settings.popup.right',
+		),
+		'orientation' => array(
+			'vertical' => 'plugins.generic.plumAnalytics.manager.settings.orientation.vertical',
+			'horizontal' => 'plugins.generic.plumAnalytics.manager.settings.orientation.horizontal',
+		),
 	);
 
 
@@ -164,14 +172,14 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		return false;
 	}
 
- 	/**
- 	 * Execute a management verb on this plugin
- 	 * @param $verb string
- 	 * @param $args array
+	/**
+	 * Execute a management verb on this plugin
+	 * @param $verb string
+	 * @param $args array
 	 * @param $message string Result status message
 	 * @param $messageParams array Parameters for the message key
- 	 * @return boolean
- 	 */
+	 * @return boolean
+	 */
 	function manage($verb, $args, &$message, &$messageParams) {
 		if (!parent::manage($verb, $args, $message, $messageParams)) {
 			// If enabling this plugin, go directly to the settings

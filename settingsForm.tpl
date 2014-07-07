@@ -56,9 +56,7 @@ $(document).ready(function() {
 		<td width="20%" class="label">{fieldLabel name="plumAnalyticsWidgetType" required="true" key="plugins.generic.plumAnalytics.manager.settings.widgetType"}</td>
 		<td width="80%" class="value">
 			<select class="selectMenu" name="widgetType" id="plumAnalyticsWidgetType">
-				{foreach from=$widgetTypes key=key item=value}
-					<option value="{$key|escape}" {if $key eq $widgetType}selected="selected" {/if}>{$value|escape}</option>
-				{/foreach}
+				{html_options_translate options=$widgetTypes selected=$widgetType}
 			</select>
 			<br />
 			<span class="instruct">{translate key="plugins.generic.plumAnalytics.manager.settings.widgetTypeInstructions"}</span>
@@ -80,18 +78,14 @@ $(document).ready(function() {
 		<td width="20%" class="label">{fieldLabel name="plumAnalyticsPopup" key="plugins.generic.plumAnalytics.manager.settings.popup"}</td>
 		<td width="80%" class="value">
 			<select class="selectMenu" name="popup" id="plumAnalyticsPopup">
-				{foreach from=$popupTypes key=key item=value}
-					<option value="{$key|escape}" {if $key eq $popup}selected="selected" {/if}>{$value|escape}</option>
-				{/foreach}
+				{html_options_translate options=$popupTypes selected=$popup}
 			</select>
 		</td>
 	<tr valign="top">
 		<td width="20%" class="label">{fieldLabel name="plumAnalyticsOrientation" key="plugins.generic.plumAnalytics.manager.settings.orientation"}</td>
 		<td width="80%" class="value">
 			<select class="selectMenu" name="orientation" id="plumAnalyticsOrientation">
-				{foreach from=$orientationTypes key=key item=value}
-					<option value="{$key|escape}" {if $key eq $orientation}selected="selected" {/if}>{$value|escape}</option>
-				{/foreach}
+				{html_options_translate options=$orientationTypes selected=$orientation}
 			</select>
 		</td>
 	</tr>
