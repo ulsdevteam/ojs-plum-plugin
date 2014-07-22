@@ -60,7 +60,7 @@ class PlumAnalyticsSettingsForm extends Form {
 		parent::Form($plugin->getTemplatePath() . 'settingsForm.tpl');
 
 		$this->addCheck(new FormValidator($this, 'widgetType', 'required', 'plugins.generic.plumAnalytics.manager.settings.widgetTypeRequired'));
-		
+		$this->addCheck(new FormValidator($this, 'hook', 'required', 'plugins.generic.plumAnalytics.manager.settings.hookRequired'));
 		$this->addCheck(new FormValidatorPost($this));
 	}
 

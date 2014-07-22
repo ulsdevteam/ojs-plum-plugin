@@ -93,6 +93,14 @@ $(document).ready(function() {
 		<td width="20%" class="label">{fieldLabel name="plumAnalyticsWidth" key="plugins.generic.plumAnalytics.manager.settings.width"}</td>
 		<td width="80%" class="value"><input type="text" name="width" id="plumAnalyticsWidth" value="{$width|escape}" size="5" maxlength="10" class="textField" /></td>
 	</tr>
+	<tr valign="top">
+		<td width="20%" class="label">{fieldLabel name="plumAnalyticsHook" required="true" key="plugins.generic.plumAnalytics.manager.settings.hook"}</td>
+		<td width="80%" class="value">
+			<select class="selectMenu" name="hook" id="plumAnalyticsHook">
+				{html_options_translate options=$hookTypes selected=$hook}
+			</select>
+		</td>
+	</tr>
 </table>
 
 <br/>

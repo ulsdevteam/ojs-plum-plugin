@@ -39,4 +39,13 @@
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation">Display Orientation</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.vertical">Vertical</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.horizontal">Horizontal</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook">Display Widget On</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.cover">Article's cover image</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">Article's page footer</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Article's "more info"</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hookRequired">A location to display the widget required.</message>
+
+	<!-- Plum Analytics Block Component -->
+	<message key="plugins.generic.plumAnalytics.block.displayName">Plum Analytics Artifact Widget Block</message>
+	<message key="plugins.generic.plumAnalytics.block.description">This block provides an optional target to attach the Plum Analytics Artifact Widget to layout positions around the article.</message>
 </locale>

@@ -22,7 +22,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 * _all is applied to each widget types; other array keys define widget types.
 	 */
 	public $settingsByWidgetType = array(
-		'_all' => array('widgetType', 'hideWhenEmpty'),
+		'_all' => array('widgetType', 'hideWhenEmpty', 'hook'),
 		'plumx-plum-print-popup' => array('popup'),
 		'plumx-summary' => array('orientation', 'hidePrint'),
 		'plumx-details' => array('width', 'border', 'hidePrint'),
@@ -43,9 +43,25 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			'vertical' => 'plugins.generic.plumAnalytics.manager.settings.orientation.vertical',
 			'horizontal' => 'plugins.generic.plumAnalytics.manager.settings.orientation.horizontal',
 		),
+		'hook' => array(
+			'cover' => 'plugins.generic.plumAnalytics.manager.settings.hook.cover',
+			'footer' => 'plugins.generic.plumAnalytics.manager.settings.hook.footer',
+			'moreInfo' => 'plugins.generic.plumAnalytics.manager.settings.hook.moreInfo',
+			'block' => 'plugins.generic.plumAnalytics.block.displayName',
+		)
 	);
 
 
+	/**
+	 * @var $availableHooks array()
+	 *  This array this the possible hooks
+	 */
+	public $availableHooks = array(
+			'cover' => 'Templates::Article::Article::ArticleCoverImage',
+			'footer' => 'Templates::Article::Footer::PageFooter',
+			'moreInfo' => 'Templates::Article::MoreInfo',
+	);
+	
 	/**
 	 * Called as a plugin is registered to the registry
 	 * @param $category String Name of category plugin was registered to
@@ -56,21 +72,53 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		$success = parent::register($category, $path);
 		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 		if ($success && $this->getEnabled()) {
-			// Insert Plum Analytics widget into the article
-			HookRegistry::register('Templates::Article::MoreInfo', array($this, 'insertWidget'));
+			// Attach to any possible hook; actual widget hook and script hook will be determined by insertWidget()
+			foreach ($this->availableHooks as $k => $v) {
+				HookRegistry::register($v, array($this, 'insertWidget'));
+			}
 
-			// Insert Plum Analytics script into the footer
-			HookRegistry::register('Templates::Article::Footer::PageFooter', array($this, 'insertWidget'));
+			// Load this plugin as a block plugin as well
+			HookRegistry::register('PluginRegistry::loadCategory', array(&$this, 'callbackLoadCategory'));
+
 		}
 		return $success;
 	}
 	
+	/**
+	 * Get the display name of this plugin.
+	 * @return String
+	 */
 	function getDisplayName() {
 		return __('plugins.generic.plumAnalytics.displayName');
 	}
 
+	/**
+	 * Get a description of the plugin.
+	 * @return String
+	 */
 	function getDescription() {
 		return __('plugins.generic.plumAnalytics.description');
+	}
+
+	/**
+	 * Register as a block plugin, even though this is a generic plugin.
+	 * This will allow the plugin to behave as a block plugin, i.e. to
+	 * have layout tasks performed on it.
+	 * @param $hookName string
+	 * @param $args array
+	 * @return boolean
+	 */
+	function callbackLoadCategory($hookName, $args) {
+		$category =& $args[0];
+		$plugins =& $args[1];
+		switch ($category) {
+			case 'blocks':
+				$this->import('PlumAnalyticsBlockPlugin');
+				$blockPlugin = new PlumAnalyticsBlockPlugin($this->getName());
+				$plugins[$blockPlugin->getSeq()][$blockPlugin->getPluginPath()] =& $blockPlugin;
+				break;
+		}
+		return false;
 	}
 
 	/**
@@ -107,6 +155,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 
 	/**
 	 * Display verbs for the management interface.
+	 * @return array of verb => description pairs
 	 */
 	function getManagementVerbs() {
 		$verbs = array();
@@ -118,19 +167,66 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 
 	/**
 	 * Insert Plum Analytics page tag to footer, if page is an Article
+	 * @param $hookName string Name of hook calling function
+	 * @param $params array of smarty and output objects
+	 * @return boolean
 	 */
 	function insertWidget($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
 		$templateMgr =& TemplateManager::getManager();
-				
+		
+		// journal is required to retreive settings
+		$currentJournal = $templateMgr->get_template_vars('currentJournal');
+		if ($validContext = $this->validateTemplateContext($templateMgr, $hookName)) {
+			$journalId = $validContext['journal'];
+			$articleDOI = $validContext['article'];
+			if ($hookName == 'Templates::Article::Footer::PageFooter') {
+				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumScript.tpl');
+			}
+			if ($this->availableHooks[$this->getSetting($journalId, 'hook')] == $hookName) {
+				$this->setupTemplateManager($journalId, $articleDOI, &$templateMgr);
+				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
+			}
+
+		}
+		return false;
+	}
+
+	/**
+	 * Set required variables in the Template Manager
+	 * @param $journalId integer Journal Id
+	 * @param $articleDOI string Article Id
+	 * @param $templateMgr object Template Manager (by reference)
+	 */
+	function setupTemplateManager($journalId, $articleDOI, &$templateMgr) {
+		// Assign the article identifier
+		$templateMgr->assign('articleDOI', $articleDOI);
+		// Assign variables required by all widgetTypes
+		foreach ($this->settingsByWidgetType['_all'] as $k) {
+			$v = $this->getSetting($journalId, $k);
+			$templateMgr->assign($k, $v);
+		}
+		// Assign variables as dictated by the settingsByWidgetType association
+		foreach ($this->settingsByWidgetType[$this->getSetting($journalId, 'widgetType')] as $k) {
+			$templateMgr->assign($k, $this->getSetting($journalId, $k));
+		}
+	}
+	
+	/**
+	 * Check to see if the context of the Template Manger will support the widget
+	 * @param $templateMgr object Template Manager
+	 * @param $hookName string the name of the hook calling this function
+	 * @return array of valid context (journal => journalId, article => articleId)
+	 */
+	function validateTemplateContext ($templateMgr, $hookName) {
 		// journal is required to retreive settings
 		$currentJournal = $templateMgr->get_template_vars('currentJournal');
 		if (!empty($currentJournal)) {
 			$journal =& Request::getJournal();
 			$journalId = $journal->getId();
 			// Shortcut this function if we are not in an article, or not in the selected hook, or not in the PageFooter
-			if (Request::getRequestedPage() != 'article' && $hookName != $this->availableHooks[$this->getSetting($journalId, 'hook')] && $hookName != 'Templates::Article::Footer::PageFooter') {
+			if (Request::getRequestedPage() != 'article' || ($hookName != $this->availableHooks[$this->getSetting($journalId, 'hook')] && !($hookName == 'block' && $this->getSetting($journalId, 'hook') == 'block') && $hookName != 'Templates::Article::Footer::PageFooter')) {
 				return false;
 			}
 
@@ -139,7 +235,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			if (!$article) {
 				return false;
 			}
-			
+
 			// requested page must be an article with a DOI for widget display
 			$articleDOI = $article->getPubId('doi');
 			if (!$articleDOI) {
@@ -150,28 +246,16 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			$requiredValues = true;
 			foreach ($this->settingsByWidgetType['_all'] as $k) {
 				$v = $this->getSetting($journalId, $k);
-				$templateMgr->assign($k, $v);
 				if (!$v) {
 					$requiredValues = false;
 				}
 			}
-			if ($requiredValues) {
-				if ($hookName == 'Templates::Article::Footer::PageFooter') {
-					$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumScript.tpl');
-				} elseif ($hookName == 'Templates::Article::MoreInfo') {
-					$templateMgr->assign('articleDOI', $articleDOI);
-					// Assign variables as dictated by the settingsByWidgetType association
-					foreach ($this->settingsByWidgetType[$this->getSetting($journalId, 'widgetType')] as $k) {
-						$templateMgr->assign($k, $this->getSetting($journalId, $k));
-					}
-					$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
-				}
-			}
-
+			return ($requiredValues ? array('journal' => $journalId, 'article' => $articleDOI) : false);
+		} else {
+			return false;
 		}
-		return false;
 	}
-
+	
 	/**
 	 * Execute a management verb on this plugin
 	 * @param $verb string
