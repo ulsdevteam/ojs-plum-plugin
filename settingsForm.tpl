@@ -99,6 +99,8 @@ $(document).ready(function() {
 			<select class="selectMenu" name="hook" id="plumAnalyticsHook">
 				{html_options_translate options=$hookTypes selected=$hook}
 			</select>
+			<br />
+			<span class="instruct">{translate key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"}</span>
 		</td>
 	</tr>
 </table>
