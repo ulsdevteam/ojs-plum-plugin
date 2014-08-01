@@ -39,10 +39,10 @@
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation">Display Orientation</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.vertical">Vertical</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.horizontal">Horizontal</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hook">Display Widget On</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hook.cover">Article's cover image</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">Article's page footer</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Article's "more info"</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook">Display Widget</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.cover">Above the article's title</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">In the article's page footer</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Below the article's abstract</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hookRequired">A location to display the widget required.</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"><![CDATA[If selecting the "Plum Analytics Artifact Widget Block", you will also need to add the block to the layout in Setup <a href="../../../setup/5#journalLayout">5.6 Journal Layout</a>]]>.</message>
 
