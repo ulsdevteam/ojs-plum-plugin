@@ -22,7 +22,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 * _all is applied to each widget types; other array keys define widget types.
 	 */
 	public $settingsByWidgetType = array(
-		'_all' => array('widgetType', 'hideWhenEmpty', 'hook'),
+		'_all' => array('widgetType', 'hideWhenEmpty', 'hook', 'htmlPrefix', 'htmlSuffix', 'blockTitle'),
 		'plumx-plum-print-popup' => array('popup'),
 		'plumx-summary' => array('orientation', 'hidePrint'),
 		'plumx-details' => array('width', 'border', 'hidePrint'),
@@ -244,7 +244,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 
 			// sanity check to ensure values required by _all widgets are included
 			$requiredValues = true;
-			foreach ($this->settingsByWidgetType['_all'] as $k) {
+			foreach (array('widgetType', 'hook') as $k) {
 				$v = $this->getSetting($journalId, $k);
 				if (!$v) {
 					$requiredValues = false;
@@ -301,11 +301,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 						return false;
 					} else {
 						$this->setBreadCrumbs(true);
+						$form->addTinyMCE();
 						$form->display();
 					}
 				} else {
 					$this->setBreadCrumbs(true);
 					$form->initData();
+					$form->addTinyMCE();
 					$form->display();
 				}
 				return true;

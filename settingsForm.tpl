@@ -31,6 +31,7 @@ function setWidgetTypeOptions () {
 		obj = document.getElementById('plumAnalytics'+allInputIds[x].charAt(0).toUpperCase()+allInputIds[x].slice(1))
 		if (obj && allInputIds[x] != 'widgetType') {
 			obj.disabled = false;
+			obj.label.className = obj.label.className.replace(/\bdisabled\b/,'');
 		}
 	}
 	if (document.getElementById('plumAnalyticsWidgetType').value != '') {
@@ -39,14 +40,34 @@ function setWidgetTypeOptions () {
 				obj = document.getElementById('plumAnalytics'+allInputIds[x].charAt(0).toUpperCase()+allInputIds[x].slice(1))
 				if (obj && allInputIds[x] != 'widgetType') {
 					obj.disabled = true;
+					obj.label.className = (obj.label.className ? obj.label.className + ' ' : '') + 'disabled'
 				}
 			}
 		}
 	}
 }
+
+function setBlockPluginOption () {
+	if (document.getElementById('plumAnalyticsHook').value != 'block') {
+		document.getElementById('plumAnalyticsBlockTitleRow').style.visibility="hidden";
+	} else {
+		document.getElementById('plumAnalyticsBlockTitleRow').style.visibility="visible";
+	}
+}
+
 $(document).ready(function() {
+	var labels = document.getElementsByTagName('LABEL');
+	for (var i = 0; i < labels.length; i++) {
+		if (labels[i].htmlFor != '') {
+			 var elem = document.getElementById(labels[i].htmlFor);
+			 if (elem)
+				elem.label = labels[i];
+		}
+	}
 	setWidgetTypeOptions();
+	setBlockPluginOption();
 	$('#plumAnalyticsWidgetType').change(function() { setWidgetTypeOptions(); });
+	$('#plumAnalyticsHook').change(function() { setBlockPluginOption(); });
 });
 
 {/literal}
@@ -102,6 +123,18 @@ $(document).ready(function() {
 			<br />
 			<span class="instruct">{translate key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"}</span>
 		</td>
+	</tr>
+	<tr valign="top" id="plumAnalyticsBlockTitleRow">
+		<td width="20%" class="label">{fieldLabel name="plumAnalyticsBlockTitle" key="plugins.generic.plumAnalytics.manager.settings.blockTitle"}</td>
+		<td width="80%" class="value"><input type="text" name="blockTitle" id="plumAnalyticsBlockTitle" value="{$blockTitle|escape}" size="25" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td width="20%" class="label">{fieldLabel name="plumAnalyticsHtmlPrefix" key="plugins.generic.plumAnalytics.manager.settings.htmlPrefix"}</td>
+		<td width="80%" class="value"><textarea name="htmlPrefix" id="plumAnalyticsBlockHtmlPrefix" rows="10" cols="80" class="textArea">{$htmlPrefix|escape}</textarea></td>
+	</tr>
+	<tr valign="top">
+		<td width="20%" class="label">{fieldLabel name="plumAnalyticsHtmlSuffix" key="plugins.generic.plumAnalytics.manager.settings.htmlSuffix"}</td>
+		<td width="80%" class="value"><textarea name="htmlSuffix" id="PlumAnalyticsBlockHtmlSuffix" rows="10" cols="80" class="textArea">{$htmlSuffix|escape}</textarea></td>
 	</tr>
 </table>
 

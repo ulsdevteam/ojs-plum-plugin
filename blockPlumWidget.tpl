@@ -8,6 +8,7 @@
  *
  *}
 <div class="block" id="plumAnalyticsWidget">
+{if $blockTitle}<span class="blockTitle">{$blockTitle}</span>{/if}
 {include file="../plugins/generic/plumAnalytics/pageTagPlumWidget.tpl"}
 </div>
 

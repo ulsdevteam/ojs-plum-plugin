@@ -100,6 +100,39 @@ class PlumAnalyticsSettingsForm extends Form {
 			$plugin->updateSetting($journalId, $k, $saveData, 'string');
 		}
 	}
+	
+	function addTinyMCE() {
+		$journalId = $this->journalId;
+		$plugin =& $this->plugin;
+		$templateMgr =& TemplateManager::getManager();
+
+		// Enable TinyMCE with specific params
+		$additionalHeadData = $templateMgr->get_template_vars('additionalHeadData');
+
+		import('classes.file.JournalFileManager');
+		$publicFileManager = new PublicFileManager();
+		$tinyMCE_script = '
+		<script language="javascript" type="text/javascript" src="'.Request::getBaseUrl().'/'.TINYMCE_JS_PATH.'/tiny_mce.js"></script>
+		<script language="javascript" type="text/javascript">
+			tinyMCE.init({
+			mode : "textareas",
+			plugins : "style,paste,jbimages",
+			theme : "advanced",
+			theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect",
+			theme_advanced_buttons2 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright, justifyfull,bullist,numlist,undo,redo,link,unlink",
+			theme_advanced_buttons3 : "cut,copy,paste,pastetext,pasteword,|,cleanup,help,code,jbimages",
+			theme_advanced_toolbar_location : "bottom",
+			theme_advanced_toolbar_align : "left",
+			content_css : "' . Request::getBaseUrl() . '/styles/common.css", 
+			relative_urls : false,
+			document_base_url : "'. Request::getBaseUrl() .'/'.$publicFileManager->getJournalFilesPath($journalId) .'/", 
+			extended_valid_elements : "span[*], div[*]"
+			});
+		</script>';
+
+		$templateMgr->assign('additionalHeadData', $additionalHeadData."\n".$tinyMCE_script);
+
+	}
 }
 
 ?>

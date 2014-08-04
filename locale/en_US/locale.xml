@@ -15,7 +15,8 @@
 	<!-- Plum Analytics -->
 	<message key="plugins.generic.plumAnalytics.displayName">Plum Analytics Artifact Widget</message>
 	<message key="plugins.generic.plumAnalytics.description"><![CDATA[Integrate OJS with PlumX, a subscription-based platform for tracking research impact.  Through this plugin, PlumX customers can embed the PlumX Artifact widget on the article abstract view in OJS to demonstrate how each article is utilized, interacted with and talked about around the world through dozens of metrics mined from the open Web.  The article requires a DOI for the widget to appear.]]></message>
-
+	<message key="plugins.generic.plumAnalytics.block.displayName">Plum Analytics Artifact Widget Block</message>
+	
 	<!-- Plum Analytics Settings Management -->
 	<message key="plugins.generic.plumAnalytics.manager.settings">Settings</message>
 	<message key="plugins.generic.plumAnalytics.manager.plumAnalyticsSettings">Plum Analytics Artifact Widget Settings</message>
@@ -44,9 +45,9 @@
 	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">In the article's page footer</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Below the article's abstract</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hookRequired">A location to display the widget required.</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"><![CDATA[If selecting the "Plum Analytics Artifact Widget Block", you will also need to add the block to the layout in Setup <a href="../../../setup/5#journalLayout">5.6 Journal Layout</a>]]>.</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"><![CDATA[If selecting the "Plum Analytics Artifact Widget Block", you will also need to add the block to the layout in Setup <a href="../../../setup/5#journalLayout">5.6 Journal Layout</a>, and a title for the block may be provided below.]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.htmlPrefix">HTML Before</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.htmlSuffix">HTML After</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.blockTitle">Block Title</message>
 
-	<!-- Plum Analytics Block Component -->
-	<message key="plugins.generic.plumAnalytics.block.displayName">Plum Analytics Artifact Widget Block</message>
-	<message key="plugins.generic.plumAnalytics.block.description">This block provides an optional target to attach the Plum Analytics Artifact Widget to layout positions around the article.</message>
 </locale>

@@ -112,6 +112,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	function getContents(&$templateMgr) {
 		$plugin =& $this->getPlumPlugin();
 		if ($validContext = $plugin->validateTemplateContext($templateMgr, 'block')) {
+			$templateMgr->assign('blockTitle', $plugin->getSetting($validContext['journal'], 'blockTitle'));
 			$plugin->setupTemplateManager($validContext['journal'], $validContext['article'], &$templateMgr);
 			return parent::getContents($templateMgr);
 		} else {
