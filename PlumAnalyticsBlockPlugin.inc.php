@@ -25,6 +25,15 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	function PlumAnalyticsBlockPlugin($parentPluginName) {
 		$this->parentPluginName = $parentPluginName;
 	}
+
+	/**
+	 * Override currentVersion to prevent upgrade and delete management.
+	 * @return boolean
+	 */
+	function getCurrentVersion() {
+		return false;
+	}
+
 	/**
 	 * Determine whether the plugin is enabled. Only enabled if the core Plum plugin is enabled.
 	 * @return boolean
