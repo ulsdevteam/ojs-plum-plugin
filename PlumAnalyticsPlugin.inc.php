@@ -80,6 +80,9 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			// Load this plugin as a block plugin as well
 			HookRegistry::register('PluginRegistry::loadCategory', array(&$this, 'callbackLoadCategory'));
 
+			// Enable TinyMCEditor in textarea fields
+			HookRegistry::register('TinyMCEPlugin::getEnableFields', array(&$this, 'getTinyMCEEnabledFields'));
+
 		}
 		return $success;
 	}
@@ -301,13 +304,11 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 						return false;
 					} else {
 						$this->setBreadCrumbs(true);
-						$form->addTinyMCE();
 						$form->display();
 					}
 				} else {
 					$this->setBreadCrumbs(true);
 					$form->initData();
-					$form->addTinyMCE();
 					$form->display();
 				}
 				return true;
@@ -316,6 +317,28 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 				assert(false);
 				return false;
 		}
+	}
+	
+	/**
+	 * Hook callback: register plugin settings fields with TinyMCE
+	 * @see TinyMCEPlugin::getEnableFields()
+	 */
+	function getTinyMCEEnabledFields($hookName, $args) {
+		$fields =& $args[1];
+
+		$application =& Application::getApplication();
+		$request =& $application->getRequest();
+		$router =& $request->getRouter();
+
+		// TinyMCEPlugin::getEnableFields hook is only invoked on page requests.
+		$page = $router->getRequestedPage($request);
+		$op = $router->getRequestedOp($request);
+		$requestArgs = $router->getRequestedArgs($request);
+
+		if ($page == 'manager' && $op == 'plugin' && in_array('plumanalyticsplugin', $requestArgs)) {
+			$fields = array('htmlPrefix', 'htmlSuffix');
+		}
+		return false;
 	}
 }
 ?>
