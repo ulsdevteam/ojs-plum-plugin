@@ -20,7 +20,7 @@
 	<!-- Plum Analytics Settings Management -->
 	<message key="plugins.generic.plumAnalytics.manager.settings">Settings</message>
 	<message key="plugins.generic.plumAnalytics.manager.plumAnalyticsSettings">Plum Analytics Artifact Widget Settings</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.description"><![CDATA[<p>With this plugin enabled, the Plum Analytics Artifact widget will be added to your articles.  The article's DOI will be used to link to the PlumX artifact metrics. For details and examples of the different widget settings, please see the <a href="https://plu.mx/developers/widgets" target="_blank">PlumX Widget Page</a>.</p>]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.description"><![CDATA[<p>With this plugin enabled, the Plum Analytics Artifact widget will be added to your articles.  This requires a service agreement with PlumX: please review the <a href="http://www.plumanalytics.com/ojs_integration.html">information on PlumX and OJS integration</a>.  The article's DOI will be used to link to the PlumX artifact metrics. For details and examples of the different widget settings, please see the <a href="https://plu.mx/developers/widgets" target="_blank">PlumX Widget Page</a>.</p>]]></message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType">Widget Type</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType.plumx-plum-print-popup">Pop Up</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType.plumx-summary">Summary</message>
