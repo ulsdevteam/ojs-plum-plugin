@@ -188,7 +188,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumScript.tpl');
 			}
 			if ($this->availableHooks[$this->getSetting($journalId, 'hook')] == $hookName) {
-				$this->setupTemplateManager($journalId, $articleDOI, &$templateMgr);
+				$this->setupTemplateManager($journalId, $articleDOI, $templateMgr);
 				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
 			}
 
