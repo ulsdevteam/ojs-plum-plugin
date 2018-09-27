@@ -214,6 +214,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		foreach ($this->settingsByWidgetType[$this->getSetting($journalId, 'widgetType')] as $k) {
 			$templateMgr->assign($k, $this->getSetting($journalId, $k));
 		}
+		$templateMgr->assign('widgetTemplatePath', $this->getTemplatePath().'pageTagPlumWidget.tpl');
 	}
 	
 	/**
