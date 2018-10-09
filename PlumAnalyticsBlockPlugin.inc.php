@@ -1,15 +1,15 @@
 <?php
 
 /**
- * @file plugins/blocks/help/HelpBlockPlugin.inc.php
+ * @file plugins/generic/plumAnalytics/PlumAnalyticsBlockPlugin.inc.php
  *
  * Copyright (c) 2014 University of Pittsburgh
  * Distributed under the GNU GPL v2 or later. For full terms see the file docs/COPYING.
  *
- * @class HelpBlockPlugin
- * @ingroup plugins_blocks_help
+ * @class PlumAnalyticsBlockPlugin
+ * @ingroup plugins_generic_plumAnalytics
  *
- * @brief Class for help block plugin
+ * @brief Class for Plum Analytics block plugin
  */
 
 import('lib.pkp.classes.plugins.BlockPlugin');
