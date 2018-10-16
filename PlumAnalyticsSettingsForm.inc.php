@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/plumAnalytics/PlumAnalyticsSettingsForm.inc.php
  *
- * Copyright (c) 2014 University of Pittsburgh
+ * Copyright (c) 2018 University of Pittsburgh
  * Distributed under the GNU GPL v2 or later. For full terms see the file docs/COPYING.
  *
  * @class PlumAnalyticsSettingsForm
@@ -17,11 +17,11 @@ import('lib.pkp.classes.form.Form');
 
 class PlumAnalyticsSettingsForm extends Form {
 
-	/** @var $journalId int */
-	var $journalId;
+	/** @var $contextId int */
+	var $_contextId;
 
-	/** @var $plugin object */
-	var $plugin;
+	/** @var $plugin PlumAnalyticsPlugin */
+	var $_plugin;
 
 	/** @var $widgetTypes array() hash of valid widget type options */
 	var $widgetTypes;
@@ -34,12 +34,12 @@ class PlumAnalyticsSettingsForm extends Form {
 	
 	/**
 	 * Constructor
-	 * @param $plugin object
-	 * @param $journalId int
+	 * @param $plugin PlumAnalyticsPlugin
+	 * @param $contextId int
 	 */
-	function PlumAnalyticsSettingsForm(&$plugin, $journalId) {
-		$this->journalId = $journalId;
-		$this->plugin =& $plugin;
+	function __construct($plugin, $contextId) {
+		$this->_contextId = $contextId;
+		$this->_plugin = $plugin;
 		
 		// Set options for widgetTypes, and setup convenience variable for settings iterators
 		$this->widgetTypes = array();
@@ -57,10 +57,10 @@ class PlumAnalyticsSettingsForm extends Form {
 			$this->options[$k] = array_merge(array('' => ''), $v);
 		}
 		
-		parent::Form($plugin->getTemplatePath() . 'settingsForm.tpl');
+		parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
 
-		$this->addCheck(new FormValidator($this, 'widgetType', 'required', 'plugins.generic.plumAnalytics.manager.settings.widgetTypeRequired'));
-		$this->addCheck(new FormValidator($this, 'hook', 'required', 'plugins.generic.plumAnalytics.manager.settings.hookRequired'));
+		$this->addCheck(new FormValidator($this, 'plumWidgetType', FORM_VALIDATOR_REQUIRED_VALUE, 'plugins.generic.plumAnalytics.manager.settings.widgetTypeRequired'));
+		$this->addCheck(new FormValidator($this, 'plumHook', FORM_VALIDATOR_REQUIRED_VALUE, 'plugins.generic.plumAnalytics.manager.settings.hookRequired'));
 		$this->addCheck(new FormValidatorPost($this));
 	}
 
@@ -68,12 +68,13 @@ class PlumAnalyticsSettingsForm extends Form {
 	 * Initialize form data.
 	 */
 	function initData() {
-		$journalId = $this->journalId;
-		$plugin =& $this->plugin;
+		$contextId = $this->_contextId;
+		$plugin =& $this->_plugin;
 
-		$this->_data = array();
+		parent::initData();
 		foreach ($this->settingsKeys as $k) {
-			$this->_data[$k] = $plugin->getSetting($journalId, $k);
+			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
+			$this->setData($k, $plugin->getSetting($contextId, lcfirst(substr($k, 4))));
 		}
 	}
 
@@ -85,19 +86,32 @@ class PlumAnalyticsSettingsForm extends Form {
 	}
 
 	/**
+	 * Fetch the form.
+	 * @copydoc Form::fetch()
+	 */
+	function fetch($request) {
+		$templateMgr = TemplateManager::getManager($request);
+		$templateMgr->assign('pluginName', $this->_plugin->getName());
+		return parent::fetch($request);
+	}
+
+	/**
 	 * Save settings.
 	 */
 	function execute() {
-		$plugin =& $this->plugin;
-		$journalId = $this->journalId;
+		$plugin =& $this->_plugin;
+		$contextId = $this->_contextId;
 
 		foreach ($this->settingsKeys as $k) {
 			$saveData = $this->getData($k);
+			$saveType = 'string';
 			// special handling of checkboxes
-			if (in_array($k, array('hideWhenEmpty', 'hidePrint', 'border'))) {
-				$saveData = $saveData ? 'true' : 'false';
+			if (in_array($k, array('plumHideWhenEmpty', 'plumHidePrint', 'plumBorder'))) {
+				$saveType = 'bool';
+				$saveData = boolval($saveData);
 			}
-			$plugin->updateSetting($journalId, $k, $saveData, 'string');
+			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
+			$plugin->updateSetting($contextId, lcfirst(substr($k, 4)), $saveData, $saveType);
 		}
 	}
 	

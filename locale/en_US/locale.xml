@@ -4,7 +4,7 @@
 <!--
   * plugins/generic/plumAnalytics/locale/en_US/locale.xml
   *
-  * Copyright (c) 2014 University of Pittsburgh
+  * Copyright (c) 2018 University of Pittsburgh
   * Distributed under the GNU GPL v2 or later. For full terms see the file docs/COPYING.
   *
   * Plum Analytics plugin localization strings
@@ -41,11 +41,11 @@
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.vertical">Vertical</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.horizontal">Horizontal</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hook">Display Widget</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hook.cover">Above the article's title</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">In the article's page footer</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Below the article's abstract</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.details">Below the article's details</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hookRequired">A location to display the widget required.</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"><![CDATA[If selecting the "Plum Analytics Artifact Widget Block", you will also need to add the block to the layout in Setup <a href="../../../setup/5#journalLayout">5.6 Journal Layout</a>, and a title for the block may be provided below.]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions"><![CDATA[If selecting the "Plum Analytics Artifact Widget Block", you will also need to add the block to the layout in Setup, and a title for the block may be provided below.]]></message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.htmlPrefix">HTML Before</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.htmlSuffix">HTML After</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.blockTitle">Block Title</message>

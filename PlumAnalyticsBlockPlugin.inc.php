@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/plumAnalytics/PlumAnalyticsBlockPlugin.inc.php
  *
- * Copyright (c) 2014 University of Pittsburgh
+ * Copyright (c) 2018 University of Pittsburgh
  * Distributed under the GNU GPL v2 or later. For full terms see the file docs/COPYING.
  *
  * @class PlumAnalyticsBlockPlugin
@@ -15,15 +15,21 @@
 import('lib.pkp.classes.plugins.BlockPlugin');
 
 class PlumAnalyticsBlockPlugin extends BlockPlugin {
-	
+
 	/** @var $parentPluginName string name of PlumAnalytics plugin */
 	var $parentPluginName;
-	
+
+	/** @var $pluginPath string path to PlumAnalytics plugins */
+	var $pluginPath;
+
 	/**
 	 * Constructor
+	 * @param $parentPluginName string
+	 * @param $pluginPath string
 	 */
-	function PlumAnalyticsBlockPlugin($parentPluginName) {
+	function PlumAnalyticsBlockPlugin($parentPluginName, $pluginPath) {
 		$this->parentPluginName = $parentPluginName;
+		$this->pluginPath = $pluginPath;
 	}
 
 	/**
@@ -35,17 +41,13 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	}
 
 	/**
-	 * Determine whether the plugin is enabled. Only enabled if the core Plum plugin is enabled.
-	 * @return boolean
+	 * @copydoc LazyLoadPlugin::getEnabled()
 	 */
 	function getEnabled() {
-		if ($this->getPlumPlugin()->getEnabled()) {
-			return true;
-		} else {
-			return false;
-		}
+		if (!Config::getVar('general', 'installed')) return true;
+		return parent::getEnabled();
 	}
-	
+
 	/**
 	 * Get the display name of this plugin.
 	 * @return String
@@ -61,7 +63,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	function getDescription() {
 		return __('plugins.generic.plumAnalytics.block.description');
 	}
-	
+
 	/**
 	 * Hide this plugin from the management interface (it's subsidiary)
 	 * @return boolean
@@ -75,7 +77,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @return array
 	 */
 	function getSupportedContexts() {
-		return array(BLOCK_CONTEXT_LEFT_SIDEBAR, BLOCK_CONTEXT_RIGHT_SIDEBAR);
+		return array(BLOCK_CONTEXT_SIDEBAR);
 	}
 
 	/**
@@ -83,7 +85,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @return object
 	 */
 	function &getPlumPlugin() {
-		$plugin =& PluginRegistry::getPlugin('generic', $this->parentPluginName);
+		$plugin = PluginRegistry::getPlugin('generic', $this->parentPluginName);
 		return $plugin;
 	}
 
@@ -92,8 +94,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @return string
 	 */
 	function getPluginPath() {
-		$plugin =& $this->getPlumPlugin();
-		return $plugin->getPluginPath();
+		return $this->pluginPath;
 	}
 
 	/**
@@ -101,7 +102,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @return string
 	 */
 	function getTemplatePath() {
-		$plugin =& $this->getPlumPlugin();
+		$plugin = $this->getPlumPlugin();
 		return $plugin->getTemplatePath();
 	}
 
@@ -118,11 +119,12 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @param $templateMgr object
 	 * @return $string
 	 */
-	function getContents(&$templateMgr) {
-		$plugin =& $this->getPlumPlugin();
-		if ($validContext = $plugin->validateTemplateContext($templateMgr, 'block')) {
-			$templateMgr->assign('blockTitle', $plugin->getSetting($validContext['journal'], 'blockTitle'));
-			$plugin->setupTemplateManager($validContext['journal'], $validContext['article'], $templateMgr);
+	function getContents($templateMgr, $request) {
+		$plugin = $this->getPlumPlugin();
+		$context = $request->getContext();
+		if ($doi = $plugin->getSubmissionDOI($templateMgr, $context->getId(), 'block')) {
+			$templateMgr->assign('blockTitle', $plugin->getSetting($context->getId(), 'blockTitle'));
+			$plugin->setupTemplateManager($context->getId(), $doi, $templateMgr);
 			return parent::getContents($templateMgr);
 		} else {
 			return false;
