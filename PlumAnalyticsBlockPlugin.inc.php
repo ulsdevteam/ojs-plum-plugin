@@ -27,7 +27,8 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @param $parentPluginName string
 	 * @param $pluginPath string
 	 */
-	function PlumAnalyticsBlockPlugin($parentPluginName, $pluginPath) {
+	function __construct($parentPluginName, $pluginPath) {
+		parent::__construct();
 		$this->parentPluginName = $parentPluginName;
 		$this->pluginPath = $pluginPath;
 	}
