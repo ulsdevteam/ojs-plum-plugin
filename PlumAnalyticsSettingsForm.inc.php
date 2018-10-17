@@ -23,13 +23,13 @@ class PlumAnalyticsSettingsForm extends Form {
 	/** @var $plugin PlumAnalyticsPlugin */
 	var $_plugin;
 
-	/** @var $widgetTypes array() hash of valid widget type options */
+	/** @var $widgetTypes array() hash of valid widget type options, for use in the form select element */
 	var $widgetTypes;
 	
 	/** @var $options array() hash of valid widget settings options */
 	var $options;
 	
-	/** @var $options array() convenience variable for each keyname for settings */
+	/** @var $options array() convenience variable for each keyname for retrieving settings */
 	var $settingsKeys;
 	
 	/**
@@ -92,6 +92,17 @@ class PlumAnalyticsSettingsForm extends Form {
 	function fetch($request) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('pluginName', $this->_plugin->getName());
+		// This assigns select options
+		foreach ($this->options as $k => $v) {
+			$templateMgr->assign($k.'Types', $v);
+		}
+		$templateMgr->assign('plumWidgetTypes', $this->widgetTypes);
+		$templateMgr->assign('plumAllWidgetSettings', $this->settingsKeys);
+		$hideSettings = array('' => array());
+		foreach ($this->_plugin->settingsByWidgetType as $k => $v) {
+			$hideSettings[$k] = array_diff($this->settingsKeys, array_merge($this->_plugin->settingsByWidgetType[$k], $this->_plugin->settingsByWidgetType['_all']));
+		}
+		$templateMgr->assign('plumWidgetHideSettings', $hideSettings);
 		return parent::fetch($request);
 	}
 
