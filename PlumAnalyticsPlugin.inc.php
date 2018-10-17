@@ -38,6 +38,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			'bottom' => 'plugins.generic.plumAnalytics.manager.settings.popup.bottom',
 			'left' => 'plugins.generic.plumAnalytics.manager.settings.popup.left',
 			'right' => 'plugins.generic.plumAnalytics.manager.settings.popup.right',
+			'hidden' => 'plugins.generic.plumAnalytics.manager.settings.popup.hidden',
 		),
 		'plumOrientation' => array(
 			'vertical' => 'plugins.generic.plumAnalytics.manager.settings.orientation.vertical',

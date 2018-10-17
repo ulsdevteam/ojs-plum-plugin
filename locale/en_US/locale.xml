@@ -34,6 +34,7 @@
 	<message key="plugins.generic.plumAnalytics.manager.settings.popup.right">Right</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.popup.top">Top</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.popup.bottom">Bottom</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.hidden">Hidden</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hideWhenEmpty">Hide When Empty</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.border">Show Border</message>
 	<message key="plugins.generic.plumAnalytics.manager.settings.hidePrint">Hide the PlumPrint</message>
