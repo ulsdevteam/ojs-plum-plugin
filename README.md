@@ -8,7 +8,7 @@ This plugin provides display of PlumX Metrics from [Plum Analytics](http://pluma
   * for 2.x, see the [ojs-dev-2_4 branch](https://github.com/ulsdevteam/ojs-plum-plugin/tree/ojs-dev-2_4)
 * Article level DOIs
   * see: Login -> Settings -> Website -> Plugins -> DOI
-* PlumX subscription
+* PlumX tracking of the artifacts with those DOIs
   * see: [Plum Analytics OJS Integration](https://plumanalytics.com/integrate/load-your-data/ojs_integration/)
 
 ## Configuration
