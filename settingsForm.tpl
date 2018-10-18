@@ -14,18 +14,18 @@
 	 */
 	function plumSetOptionVisibility() {
 		{/literal}
-			{foreach from=$plumAllWidgetSettings item=plumWidgetSetting}
-				{if $plumWidgetSetting != "plumBlockTitle"}
-				$('#{$plumWidgetSetting|escape}Container').show();
+			{foreach from=$plumAllWidgetSettings item=plumxWidgetSetting}
+				{if $plumxWidgetSetting != "plumBlockTitle"}
+				$('#{$plumxWidgetSetting|escape}Container').show();
 				{/if}
 			{/foreach}
 		{literal}
 		switch ($('#plumWidgetType').val()) {
 			{/literal}
-			{foreach from=$plumWidgetTypes item=plumWidgetText key=plumWidgetType}
-				case "{$plumWidgetType|escape}":
-					{foreach from=$plumWidgetHideSettings[$plumWidgetType] item=plumWidgetSetting}
-						$('#{$plumWidgetSetting|escape}Container').hide();
+			{foreach from=$plumWidgetTypes item=plumxWidgetText key=plumxWidgetType}
+				case "{$plumxWidgetType|escape}":
+					{foreach from=$plumWidgetHideSettings[$plumxWidgetType] item=plumxWidgetSetting}
+						$('#{$plumxWidgetSetting|escape}Container').hide();
 					{/foreach}
 					break;
 			{/foreach}
