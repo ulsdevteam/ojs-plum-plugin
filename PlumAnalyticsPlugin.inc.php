@@ -78,7 +78,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			$this->import('PlumAnalyticsBlockPlugin');
 			PluginRegistry::register(
 				'blocks',
-				new PlumAnalyticsBlockPlugin($this->getName()),
+				new PlumAnalyticsBlockPlugin($this->getName(), $this->getPluginPath()),
 				$this->getPluginPath()
 			);
 
