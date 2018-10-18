@@ -44,9 +44,9 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	/**
 	 * @copydoc LazyLoadPlugin::getEnabled()
 	 */
-	function getEnabled() {
+	function getEnabled($contextId = null) {
 		if (!Config::getVar('general', 'installed')) return true;
-		return parent::getEnabled();
+		return parent::getEnabled($contextId);
 	}
 
 	/**
@@ -99,12 +99,11 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	}
 
 	/**
-	 * Override the builtin to get the correct template path.
-	 * @return string
+	 * @copydoc Plugin::getTemplatePath()
 	 */
-	function getTemplatePath() {
+	function getTemplatePath($inCore = false) {
 		$plugin = $this->getPlumPlugin();
-		return $plugin->getTemplatePath();
+		return $plugin->getTemplatePath($inCore);
 	}
 
 	/**
@@ -116,11 +115,9 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	}
 
 	/**
-	 * Get the HTML contents for this block.
-	 * @param $templateMgr object
-	 * @return $string
+	 * @copydoc BlockPlugin::getContents()
 	 */
-	function getContents($templateMgr, $request) {
+	function getContents($templateMgr, $request = null) {
 		$plugin = $this->getPlumPlugin();
 		$context = $request->getContext();
 		if ($doi = $plugin->getSubmissionDOI($templateMgr, $context->getId(), 'block')) {
