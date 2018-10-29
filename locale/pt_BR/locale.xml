@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
+
+<!--
+  * plugins/generic/plumAnalytics/locale/en_US/locale.xml
+  *
+  * Copyright (c) 2018 University of Pittsburgh
+  * Distributed under the GNU GPL v2 or later. For full terms see the file docs/COPYING.
+  *
+  * Plum Analytics plugin localization strings
+  -->
+ 
+<locale name="pt_BR" full_name="Português (Brasil)">
+
+	<!-- Plum Analytics -->
+	<message key="plugins.generic.plumAnalytics.displayName">Plum Analytics Artifact Widget</message>
+	<message key="plugins.generic.plumAnalytics.description"><![CDATA [Integra o OJS com PlumX, uma plataforma baseada em assinatura para acompanhar o impacto da pesquisa.
+Através deste plugin, os clientes da PlumX podem incorporar o widget Artifact PlumX na visão abstrata do artigo no OJS para demonstrar como cada artigo é utilizado,
+interagido e falado em todo o mundo através de dezenas de métricas extraídas da Web aberta. O artigo requer um DOI para o widget aparecer.]]></message>
+	<message key="plugins.generic.plumAnalytics.block.displayName">Bloco do Widgets dos artigos no Plum Analytics</message>
+	
+	<!-- Plum Analytics Settings Management -->
+	<message key="plugins.generic.plumAnalytics.manager.settings">Configurações</message>
+	<message key="plugins.generic.plumAnalytics.manager.plumAnalyticsSettings">Configurações do widget dos artigos do Plum Analytics</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.description"> <![CDATA [<p> Com este plug-in ativado, o widget de Artigos Plum Analytics será adicionado aos seus artigos.
+Isso requer um contrato de serviço com o PlumX: leia as <a href="http://plumanalytics.com/ojs_integration/"> informações sobre a integração do PlumX e do OJS </a>.
+O DOI do artigo será usado para vincular as métricas dos Artigos PlumX. Para detalhes e exemplos das diferentes configurações de widgets,
+consulte a <a href="https://plu.mx/developers/widgets" target="_blank"> página de widgets do PlumX </a>. </ p>]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType">Tipo do Widget</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType.plumx-plum-print-popup">Pop Up</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType.plumx-summary">Sumário</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetType.plumx-details">Detalhes</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetTypeInstructions">
+	<![CDATA[Para obter detalhes e exemplos dos diferentes tipos de widgets, consulte o <a href="https://plu.mx/developers/widgets" target="_blank">PlumX Widgets Page</a>.]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widgetTypeRequired">O tipo de widget é obrigatório.</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.width">Largura</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.widthInvalid">A  largura é inválida</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup">Alinhamento Popup</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.left">Esquerda</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.right">Direita</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.top">Topo</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.bottom">Inferior</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.popup.hidden">Escondido</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hideWhenEmpty">Escondido quando vazio</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.border">Mostrar Bordar</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hidePrint">Esconder o PlumPrint</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.orientation">Exibir Orientação</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.vertical">Vertical</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.orientation.horizontal">Horizontal</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook">Exibir Widget</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.footer">No rodapé da página do artigo</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.moreInfo">Abaixo do resumo do artigo</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hook.details">Abaixo dos detalhes do artigo</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hookRequired">Um local para exibir o widget requerido.</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.hookInstructions">
+	<![CDATA[Selecionar o "Bloco de Widgets de Artigos do Plum Analytics", você também precisará adicionar o bloco ao layout na Configuração, e um título para o bloco poder ser fornecido abaixo.]]></message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.htmlPrefix">HTML Depois</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.htmlSuffix">HTML Antes</message>
+	<message key="plugins.generic.plumAnalytics.manager.settings.blockTitle">Titulo do Bloco</message>
+
+</locale>
