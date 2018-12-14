@@ -19,13 +19,16 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	/**
 	 * @var $settingsByWidgetType array()
 	 *  This array associates widget types with the possible widget settings options
-	 * _all is applied to each widget types; other array keys define widget types.
+	 * _general are plugin settings not mapped to Plum data attributes
+	 * _all are data attributes applied to each widget type
+	 * other array keys define widget types with specific data attributes
 	 */
 	public $settingsByWidgetType = array(
-		'_all' => array('plumWidgetType', 'plumHideWhenEmpty', 'plumHook', 'plumHtmlPrefix', 'plumHtmlSuffix', 'plumBlockTitle'),
-		'plumx-plum-print-popup' => array('plumPopup'),
-		'plumx-summary' => array('plumOrientation', 'plumHidePrint'),
-		'plumx-details' => array('plumWidth', 'plumBorder', 'plumHidePrint'),
+		'_general' => array('plumWidgetType', 'plumHook', 'plumHtmlPrefix', 'plumHtmlSuffix', 'plumBlockTitle', 'plumTheme'),
+		'_all' => array('data-hide-usage', 'data-hide-captures', 'data-hide-mentions', 'data-hide-socialmedia', 'data-hide-citations', 'data-pass-hidden-categories', 'data-hide-when-empty'),
+		'plumx-plum-print-popup' => array('data-popup'),
+		'plumx-summary' => array('data-orientation', 'data-hide-print'),
+		'plumx-details' => array('data-width', 'data-border', 'data-hide-print'),
 	);
 
 	/**
@@ -33,16 +36,21 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 *  This array associates widget settings with the possible widget values options
 	 */
 	public $valuesByWidgetSetting = array(
-		'plumPopup' => array(
-			'top' => 'plugins.generic.plumAnalytics.manager.settings.popup.top',
-			'bottom' => 'plugins.generic.plumAnalytics.manager.settings.popup.bottom',
-			'left' => 'plugins.generic.plumAnalytics.manager.settings.popup.left',
-			'right' => 'plugins.generic.plumAnalytics.manager.settings.popup.right',
-			'hidden' => 'plugins.generic.plumAnalytics.manager.settings.popup.hidden',
+		'plumTheme' => array(
+			'' => 'plugins.generic.plumAnalytics.manager.settings.theme.default',
+			'plum-liberty-theme' => 'plugins.generic.plumAnalytics.manager.settings.theme.liberty',
+			'plum-bigben-theme' => 'plugins.generic.plumAnalytics.manager.settings.theme.bigben',
 		),
-		'plumOrientation' => array(
-			'vertical' => 'plugins.generic.plumAnalytics.manager.settings.orientation.vertical',
-			'horizontal' => 'plugins.generic.plumAnalytics.manager.settings.orientation.horizontal',
+		'data-popup' => array(
+			'top' => 'plugins.generic.plumAnalytics.manager.settings.data-popup.top',
+			'bottom' => 'plugins.generic.plumAnalytics.manager.settings.data-popup.bottom',
+			'left' => 'plugins.generic.plumAnalytics.manager.settings.data-popup.left',
+			'right' => 'plugins.generic.plumAnalytics.manager.settings.data-popup.right',
+			'hidden' => 'plugins.generic.plumAnalytics.manager.settings.data-popup.hidden',
+		),
+		'data-orientation' => array(
+			'vertical' => 'plugins.generic.plumAnalytics.manager.settings.data-orientation.vertical',
+			'horizontal' => 'plugins.generic.plumAnalytics.manager.settings.data-orientation.horizontal',
 		),
 		'plumHook' => array(
 			'footer' => 'plugins.generic.plumAnalytics.manager.settings.hook.footer',
@@ -144,7 +152,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			if ($hookName == 'Templates::Article::Footer::PageFooter') {
 				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumScript.tpl');
 			}
-			if ($this->availableHooks[$this->getSetting($context->getId(), 'hook')] == $hookName) {
+			if ($this->availableHooks[$this->getSetting($context->getId(), 'plumHook')] == $hookName) {
 				$this->setupTemplateManager($context->getId(), $doi, $templateMgr);
 				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
 			}
@@ -162,16 +170,19 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		// Assign the article identifier
 		$templateMgr->assign('plumSubmissionDOI', $doi);
 		// Assign variables required by all widgetTypes
-		foreach ($this->settingsByWidgetType['_all'] as $k) {
-			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
-			$v = $this->getSetting($contextId, lcfirst(substr($k, 4)));
+		foreach ($this->settingsByWidgetType['_generic'] as $k) {
+			$v = $this->getSetting($contextId, $k);
 			$templateMgr->assign($k, $v);
 		}
-		// Assign variables as dictated by the settingsByWidgetType association
-		foreach ($this->settingsByWidgetType[$this->getSetting($contextId, 'widgetType')] as $k) {
-			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
-			$templateMgr->assign($k, $this->getSetting($contextId, lcfirst(substr($k, 4))));
+		$dataOptions = array();
+		foreach ($this->settingsByWidgetType['_all'] as $k) {
+			$dataOptions[$k] = $this->getSetting($contextId, $k);
 		}
+		// Assign variables as dictated by the settingsByWidgetType association
+		foreach ($this->settingsByWidgetType[$this->getSetting($contextId, 'plumWidgetType')] as $k) {
+			$dataOptions[$k] = $this->getSetting($contextId, $k);
+		}
+		$templateMgr->assign('dataOptions', $this->getSetting($contextId, $dataOptions));
 		$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath().'pageTagPlumWidget.tpl');
 	}
 
@@ -202,7 +213,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 
 		// sanity check to ensure values required by _all widgets are included
 		$requiredValues = true;
-		foreach (array('widgetType', 'hook') as $k) {
+		foreach (array('plumWidgetType', 'plumHook') as $k) {
 			$v = $this->getSetting($context, $k);
 			if (!$v) {
 				$requiredValues = false;
@@ -237,6 +248,6 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		}
 		return parent::manage($args, $request);
 	}
-	
+
 }
 ?>
