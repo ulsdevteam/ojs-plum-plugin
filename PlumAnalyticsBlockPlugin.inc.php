@@ -119,13 +119,15 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	function getContents($templateMgr, $request = null) {
 		$plugin = $this->getPlumPlugin();
 		$context = $request->getContext();
-		if ($doi = $plugin->getSubmissionDOI($templateMgr, $context->getId(), 'block')) {
-			$templateMgr->assign('blockTitle', $plugin->getSetting($context->getId(), 'blockTitle'));
-			$plugin->setupTemplateManager($context->getId(), $doi, $templateMgr);
-			return parent::getContents($templateMgr);
-		} else {
-			return false;
+		if ($templateMgr) {
+			$doi = $plugin->getSubmissionDOI($templateMgr, $context->getId(), 'block');
+			if ($doi) {
+				$templateMgr->assign('blockTitle', $plugin->getSetting($context->getId(), 'blockTitle'));
+				$plugin->setupTemplateManager($context->getId(), $doi, $templateMgr);
+				return parent::getContents($templateMgr);
+			}
 		}
+		return false;
 	}
 }
 

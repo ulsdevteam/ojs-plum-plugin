@@ -142,11 +142,25 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		$doi = $this->getSubmissionDOI($templateMgr, $context->getId(), $hookName);
 		if ($doi) {
 			if ($hookName == 'Templates::Article::Footer::PageFooter') {
-				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumScript.tpl');
+				if (method_exists($this, 'getTemplateResource')) {
+					// OJS 3.2+
+					$target = $this->getTemplateResource('pageTagPlumScript.tpl');
+				} else {
+					// OJS 3.1
+					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumScript.tpl';
+				}
+				$output .= $templateMgr->fetch($target);
 			}
 			if ($this->availableHooks[$this->getSetting($context->getId(), 'hook')] == $hookName) {
 				$this->setupTemplateManager($context->getId(), $doi, $templateMgr);
-				$output .= $templateMgr->fetch($this->getTemplatePath() . 'pageTagPlumWidget.tpl');
+				if (method_exists($this, 'getTemplateResource')) {
+					// OJS 3.2+
+					$target = $this->getTemplateResource('pageTagPlumWidget.tpl');
+				} else {
+					// OJS 3.1
+					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumWidget.tpl';
+				}
+				$output .= $templateMgr->fetch($target);
 			}
 		}
 		return false;
@@ -183,13 +197,23 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 * @return string DOI, if present and plugin settings are configured appropriately
 	 */
 	function getSubmissionDOI($templateMgr, $context, $hookName) {
+		// Use the request and page router to get the requested page
+		$request = $this->getRequest();
+		$router = $request->getRouter();
 		// Shortcut this function if we are not in an article, or not in the selected hook, or not in the PageFooter
-		if (Request::getRequestedPage() != 'article' || ($hookName != $this->availableHooks[$this->getSetting($context, 'hook')] && !($hookName == 'block' && $this->getSetting($context, 'hook') == 'block') && $hookName != 'Templates::Article::Footer::PageFooter')) {
+		if ($router->getRequestedPage($request) != 'article' || ($hookName != $this->availableHooks[$this->getSetting($context, 'hook')] && !($hookName == 'block' && $this->getSetting($context, 'hook') == 'block') && $hookName != 'Templates::Article::Footer::PageFooter')) {
 			return false;
 		}
 
 		// submission is required to retreive DOI
-		$submission = $templateMgr->get_template_vars('article');
+		$submission = null;
+		if (method_exists($templateMgr, 'get_template_vars')) {
+			// Smarty 2
+			$submission = $templateMgr->get_template_vars('article');
+		} else if (method_exists($templateMgr, 'getTemplateVars')) {
+			// Smarty 3
+			$submission = $templateMgr->getTemplateVars('article');
+		}
 		if (!$submission) {
 			return false;
 		}
