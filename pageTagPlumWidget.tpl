@@ -9,6 +9,6 @@
  *}
 {if $htmlPrefix}{$htmlPrefix}{/if}
  <!-- Plum Analytics -->
-<a href="https://plu.mx/a/?doi={$articleDOI|escape}" class="{$widgetType|escape}" {if $hideWhenEmpty}data-hide-when-empty="{$hideWhenEmpty|escape}" {/if}{if $hidePrint}data-hide-print="{$hidePrint|escape}" {/if}{if $orientation}data-orientation="{$orientation|escape}" {/if}{if $popup}data-popup="{$popup|escape}" {/if}{if $border}data-border="{$border|escape}"{/if}{if $width}data-width="{$width|escape}"{/if}></a>
+<a href="https://plu.mx/a?doi={$articleDOI|escape}" class="{$widgetType|escape}" {if $hideWhenEmpty}data-hide-when-empty="{$hideWhenEmpty|escape}" {/if}{if $hidePrint}data-hide-print="{$hidePrint|escape}" {/if}{if $orientation}data-orientation="{$orientation|escape}" {/if}{if $popup}data-popup="{$popup|escape}" {/if}{if $border}data-border="{$border|escape}"{/if}{if $width}data-width="{$width|escape}"{/if}></a>
 <!-- /Plum Analytics -->
 {if $htmlSuffix}{$htmlSuffix}{/if}
