@@ -9,6 +9,10 @@ This plugin provides display of PlumX Metrics from [Plum Analytics](http://pluma
 * Article level DOIs
   * see: Login -> Settings -> Website -> Plugins -> DOI
 * PlumX tracking of the artifacts with those DOIs
+  * this coverage occurs by one or more of:
+    * Representation in a source like CrossRef, PubMed, Scopus, Science Direct, SSRN, EBSCOhost, or others
+    * a request for harvesting via OAI-PMH
+    * a customer relationship for custom harvesting
   * see: [Plum Analytics OJS Integration](https://plumanalytics.com/integrate/load-your-data/ojs_integration/)
 
 ## Configuration
