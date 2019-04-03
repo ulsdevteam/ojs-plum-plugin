@@ -57,7 +57,7 @@ class PlumAnalyticsSettingsForm extends Form {
 			$this->options[$k] = array_merge(array('' => ''), $v);
 		}
 		
-		parent::__construct(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('settingsForm.tpl') : $plugin->getTemplatePath() . DIRECTORY_SEPARATOR . 'settingsForm.tpl');
+		parent::__construct(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('settingsForm.tpl') : $plugin->getTemplatePath() . 'settingsForm.tpl');
 
 		$this->addCheck(new FormValidator($this, 'plumWidgetType', FORM_VALIDATOR_REQUIRED_VALUE, 'plugins.generic.plumAnalytics.manager.settings.widgetTypeRequired'));
 		$this->addCheck(new FormValidator($this, 'plumHook', FORM_VALIDATOR_REQUIRED_VALUE, 'plugins.generic.plumAnalytics.manager.settings.hookRequired'));

@@ -147,7 +147,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 					$target = $this->getTemplateResource('pageTagPlumScript.tpl');
 				} else {
 					// before OJS 3.1.2
-					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumScript.tpl';
+					$target = $this->getTemplatePath() . 'pageTagPlumScript.tpl';
 				}
 				$output .= $templateMgr->fetch($target);
 			}
@@ -158,7 +158,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 					$target = $this->getTemplateResource('pageTagPlumWidget.tpl');
 				} else {
 					// before OJS 3.1.2
-					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumWidget.tpl';
+					$target = $this->getTemplatePath() . 'pageTagPlumWidget.tpl';
 				}
 				$output .= $templateMgr->fetch($target);
 			}
@@ -191,7 +191,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplateResource('pageTagPlumWidget.tpl'));
 		} else {
 			// before OJS 3.1.2
-			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath(). DIRECTORY_SEPARATOR . 'pageTagPlumWidget.tpl');
+			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath(). 'pageTagPlumWidget.tpl');
 		}
 	}
 
@@ -272,7 +272,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 * @copydoc Plugin::getTemplatePath()
 	 */
 	function getTemplatePath($inCore = false) {
-		return $this->pluginPath . DIRECTORY_SEPARATOR . 'templates';
+		return parent::getTemplatePath($inCore) . 'templates' . DIRECTORY_SEPARATOR;
 	}
 
 }
