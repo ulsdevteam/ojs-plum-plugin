@@ -102,8 +102,7 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @copydoc Plugin::getTemplatePath()
 	 */
 	function getTemplatePath($inCore = false) {
-		$plugin = PluginRegistry::getPlugin('generic', $this->parentPluginName);
-		return $plugin->getTemplatePath();
+		return $this->pluginPath . DIRECTORY_SEPARATOR . 'templates';
 	}
 
 	/**
