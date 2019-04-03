@@ -267,6 +267,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		}
 		return parent::manage($args, $request);
 	}
-	
+
+	/**
+	 * @copydoc Plugin::getTemplatePath()
+	 */
+	function getTemplatePath($inCore = false) {
+		return $this->pluginPath . DIRECTORY_SEPARATOR . 'templates';
+	}
+
 }
 ?>
