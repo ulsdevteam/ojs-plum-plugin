@@ -143,22 +143,22 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		if ($doi) {
 			if ($hookName == 'Templates::Article::Footer::PageFooter') {
 				if (method_exists($this, 'getTemplateResource')) {
-					// OJS 3.2+
+					// OJS 3.1.2+
 					$target = $this->getTemplateResource('pageTagPlumScript.tpl');
 				} else {
-					// OJS 3.1
-					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumScript.tpl';
+					// before OJS 3.1.2
+					$target = $this->getTemplatePath() . 'pageTagPlumScript.tpl';
 				}
 				$output .= $templateMgr->fetch($target);
 			}
 			if ($this->availableHooks[$this->getSetting($context->getId(), 'hook')] == $hookName) {
 				$this->setupTemplateManager($context->getId(), $doi, $templateMgr);
 				if (method_exists($this, 'getTemplateResource')) {
-					// OJS 3.2+
+					// OJS 3.1.2+
 					$target = $this->getTemplateResource('pageTagPlumWidget.tpl');
 				} else {
-					// OJS 3.1
-					$target = $this->getTemplatePath() . DIRECTORY_SEPARATOR . 'pageTagPlumWidget.tpl';
+					// before OJS 3.1.2
+					$target = $this->getTemplatePath() . 'pageTagPlumWidget.tpl';
 				}
 				$output .= $templateMgr->fetch($target);
 			}
@@ -186,7 +186,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
 			$templateMgr->assign($k, $this->getSetting($contextId, lcfirst(substr($k, 4))));
 		}
-		$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath().'pageTagPlumWidget.tpl');
+		if (method_exists($this, 'getTemplateResource')) {
+			// OJS 3.1.2+
+			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplateResource('pageTagPlumWidget.tpl'));
+		} else {
+			// before OJS 3.1.2
+			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath(). 'pageTagPlumWidget.tpl');
+		}
 	}
 
 	/**
@@ -261,6 +267,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		}
 		return parent::manage($args, $request);
 	}
-	
+
+	/**
+	 * @copydoc Plugin::getTemplatePath()
+	 */
+	function getTemplatePath($inCore = false) {
+		return parent::getTemplatePath($inCore) . 'templates' . DIRECTORY_SEPARATOR;
+	}
+
 }
 ?>

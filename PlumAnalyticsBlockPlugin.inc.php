@@ -99,18 +99,12 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	}
 
 	/**
-	 * @copydoc Plugin::getTemplatePath()
-	 */
-	function getTemplatePath($inCore = false) {
-		return $this->pluginPath;
-	}
-
-	/**
 	 * Get the name of the block template file.
 	 * @return String
 	 */
 	function getBlockTemplateFilename() {
-		return 'blockPlumWidget.tpl';
+		$plugin = $this->getPlumPlugin();
+		return (method_exists($plugin, 'getTemplateResource') ? '' : 'templates'.DIRECTORY_SEPARATOR) . 'blockPlumWidget.tpl';
 	}
 
 	/**
