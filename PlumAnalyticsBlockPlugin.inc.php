@@ -103,7 +103,8 @@ class PlumAnalyticsBlockPlugin extends BlockPlugin {
 	 * @return String
 	 */
 	function getBlockTemplateFilename() {
-		return 'blockPlumWidget.tpl';
+		$plugin = $this->getPlumPlugin();
+		return (method_exists($plugin, 'getTemplateResource') ? '' : 'templates'.DIRECTORY_SEPARATOR) . 'blockPlumWidget.tpl';
 	}
 
 	/**
