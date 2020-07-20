@@ -17,14 +17,19 @@ This plugin provides display of PlumX Metrics from [Plum Analytics](http://pluma
 
 ## Configuration
 
-Install this as a "generic" plugin in OJS.  The preferred installation method is through the Plugin Gallery.  To install manually via the filesystem, extract the contents of this archive to a "plumAnalytics" directory under "plugins/generic" in your OJS root.  To install via Git submodule, target that same directory path: 
+Install this as a "generic" plugin in OJS.  The preferred installation method is through the Plugin Gallery.
+
+To install manually via the filesystem, extract the contents of this archive to a "plumAnalytics" directory under "plugins/generic" in your OJS root.
+
+To install via Git submodule, target that same directory path: 
 ```
-git submodule add https://github.com/ulsdevteam/ojs-plum-plugin plugins/generic/plumAnalytics` and `git submodule update --init --recursive plugins/generic/plumAnalytics
+git submodule add https://github.com/ulsdevteam/ojs-plum-plugin plugins/generic/plumAnalytics
+git submodule update --init --recursive plugins/generic/plumAnalytics
 ```
 
-Run the upgrade script to register this plugin, e.g.: 
+If not installed via the Plugin Gallery, run the upgrade script to register this plugin, e.g.: 
 ```
-php tools/upgrade.php upgrade
+php lib/pkp/tools/installPluginVersion.php plugins/generic/plumAnalytics/version.xml
 ```
 
 Login as a Journal Manger and navigate to the Journal for which you wish to use the Widget.  Enable the plugin via Login -> Settings -> Website -> Plugins -> Plum Analytics Artifact Widget -> Enable.
