@@ -12,8 +12,8 @@
 <version>
 	<application>plumAnalytics</application>
 	<type>plugins.generic</type>
-	<release>1.3.0.1</release>
-	<date>2020-08-03</date>
+	<release>1.3.0.2</release>
+	<date>2020-04-30</date>
 	<lazy-load>1</lazy-load>
 	<class>PlumAnalyticsPlugin</class>
 </version>

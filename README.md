@@ -24,7 +24,6 @@ To install manually via the filesystem, extract the contents of this archive to 
 To install via Git submodule, target that same directory path: 
 ```
 git submodule add https://github.com/ulsdevteam/ojs-plum-plugin plugins/generic/plumAnalytics
-git submodule update --init --recursive plugins/generic/plumAnalytics
 ```
 
 If not installed via the Plugin Gallery, run the upgrade script to register this plugin, e.g.: 
@@ -32,7 +31,7 @@ If not installed via the Plugin Gallery, run the upgrade script to register this
 php lib/pkp/tools/installPluginVersion.php plugins/generic/plumAnalytics/version.xml
 ```
 
-Login as a Journal Manger and navigate to the Journal for which you wish to use the Widget.  Enable the plugin via Login -> Settings -> Website -> Plugins -> Plum Analytics Artifact Widget -> Enable.
+Login as a Journal Manager and navigate to the Journal for which you wish to use the Widget.  Enable the plugin via Login -> Settings -> Website -> Plugins -> Plum Analytics Artifact Widget -> Enable.
 
 To configure the plugin, you will need to select what type of widget you want, and where it will display.  Additional options may apply to specific widget types.  See the [PlumX Widgets page](https://plu.mx/developers/widgets) for an overview of the different widget types and options.
 
