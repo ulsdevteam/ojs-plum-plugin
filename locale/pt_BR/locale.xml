@@ -14,7 +14,7 @@
 
 	<!-- Plum Analytics -->
 	<message key="plugins.generic.plumAnalytics.displayName">Plum Analytics Artifact Widget</message>
-	<message key="plugins.generic.plumAnalytics.description"><![CDATA [Integra o OJS com PlumX, uma plataforma baseada em assinatura para acompanhar o impacto da pesquisa.
+	<message key="plugins.generic.plumAnalytics.description"><![CDATA[Integra o OJS com PlumX, uma plataforma baseada em assinatura para acompanhar o impacto da pesquisa.
 Através deste plugin, os clientes da PlumX podem incorporar o widget Artifact PlumX na visão abstrata do artigo no OJS para demonstrar como cada artigo é utilizado,
 interagido e falado em todo o mundo através de dezenas de métricas extraídas da Web aberta. O artigo requer um DOI para o widget aparecer.]]></message>
 	<message key="plugins.generic.plumAnalytics.block.displayName">Bloco do Widgets dos artigos no Plum Analytics</message>
@@ -22,7 +22,7 @@ interagido e falado em todo o mundo através de dezenas de métricas extraídas 
 	<!-- Plum Analytics Settings Management -->
 	<message key="plugins.generic.plumAnalytics.manager.settings">Configurações</message>
 	<message key="plugins.generic.plumAnalytics.manager.plumAnalyticsSettings">Configurações do widget dos artigos do Plum Analytics</message>
-	<message key="plugins.generic.plumAnalytics.manager.settings.description"> <![CDATA [<p> Com este plug-in ativado, o widget de Artigos Plum Analytics será adicionado aos seus artigos.
+	<message key="plugins.generic.plumAnalytics.manager.settings.description"> <![CDATA[<p> Com este plug-in ativado, o widget de Artigos Plum Analytics será adicionado aos seus artigos.
 Isso requer um contrato de serviço com o PlumX: leia as <a href="http://plumanalytics.com/ojs_integration/"> informações sobre a integração do PlumX e do OJS </a>.
 O DOI do artigo será usado para vincular as métricas dos Artigos PlumX. Para detalhes e exemplos das diferentes configurações de widgets,
 consulte a <a href="https://plu.mx/developers/widgets" target="_blank"> página de widgets do PlumX </a>. </ p>]]></message>
