@@ -89,7 +89,7 @@ class PlumAnalyticsSettingsForm extends Form {
 	 * Fetch the form.
 	 * @copydoc Form::fetch()
 	 */
-	function fetch($request) {
+	function fetch($request, $template = NULL, $display = false) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('pluginName', $this->_plugin->getName());
 		// This assigns select options
@@ -109,7 +109,7 @@ class PlumAnalyticsSettingsForm extends Form {
 	/**
 	 * Save settings.
 	 */
-	function execute() {
+	function execute(...$functionArgs) {
 		$plugin =& $this->_plugin;
 		$contextId = $this->_contextId;
 
