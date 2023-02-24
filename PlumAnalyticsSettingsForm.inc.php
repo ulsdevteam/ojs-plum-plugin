@@ -103,7 +103,7 @@ class PlumAnalyticsSettingsForm extends Form {
 			$hideSettings[$k] = array_diff($this->settingsKeys, array_merge($this->_plugin->settingsByWidgetType[$k], $this->_plugin->settingsByWidgetType['_all']));
 		}
 		$templateMgr->assign('plumWidgetHideSettings', $hideSettings);
-		return parent::fetch($request);
+		return parent::fetch($request, $template = NULL, $display = false);
 	}
 
 	/**
