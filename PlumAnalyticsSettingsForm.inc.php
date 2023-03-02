@@ -89,7 +89,7 @@ class PlumAnalyticsSettingsForm extends Form {
 	 * Fetch the form.
 	 * @copydoc Form::fetch()
 	 */
-	function fetch($request) {
+	function fetch($request, $template = NULL, $display = false) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('pluginName', $this->_plugin->getName());
 		// This assigns select options
@@ -103,13 +103,13 @@ class PlumAnalyticsSettingsForm extends Form {
 			$hideSettings[$k] = array_diff($this->settingsKeys, array_merge($this->_plugin->settingsByWidgetType[$k], $this->_plugin->settingsByWidgetType['_all']));
 		}
 		$templateMgr->assign('plumWidgetHideSettings', $hideSettings);
-		return parent::fetch($request);
+		return parent::fetch($request, $template = NULL, $display = false);
 	}
 
 	/**
 	 * Save settings.
 	 */
-	function execute() {
+	function execute(...$functionArgs) {
 		$plugin =& $this->_plugin;
 		$contextId = $this->_contextId;
 
