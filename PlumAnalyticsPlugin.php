@@ -11,8 +11,20 @@
  *
  * @brief Plum Analytics plugin class
  */
+namespace APP\plugins\generic\plumAnalytics;
 
-import('lib.pkp.classes.plugins.GenericPlugin');
+//import('lib.pkp.classes.plugins.GenericPlugin');
+use PKP\plugins\GenericPlugin;
+use PKP\config\Config;
+use PKP\plugins\PluginRegistry;
+use PKP\linkAction\LinkAction;
+use PKP\linkAction\request\AjaxModal;
+use PKP\core\JSONMessage;
+use PKP\plugins\Hook;
+use APP\plugins\generic\plumAnalytics\PlumAnalyticsBlockPlugin;
+use APP\plugins\generic\plumAnalytics\PlumAnalyticsSettingsForm;
+use APP\template\TemplateManager;
+
 
 class PlumAnalyticsPlugin extends GenericPlugin {
 
@@ -71,11 +83,12 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		if ($success && $this->getEnabled()) {
 			// Attach to any possible hook; actual widget hook and script hook will be determined by insertWidget()
 			foreach ($this->availableHooks as $k => $v) {
-				HookRegistry::register($v, array($this, 'insertWidget'));
+				//HookRegistry::register($v, array($this, 'insertWidget'));
+				Hook::add($v, array($this, 'insertWidget'));
 			}
 
 			// Load this plugin as a block plugin as well
-			$this->import('PlumAnalyticsBlockPlugin');
+			//$this->import('PlumAnalyticsBlockPlugin');
 			PluginRegistry::register(
 				'blocks',
 				new PlumAnalyticsBlockPlugin($this->getName(), $this->getPluginPath()),
@@ -83,7 +96,8 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			);
 
 			// Enable TinyMCEditor in textarea fields
-			HookRegistry::register('TinyMCEPlugin::getEnableFields', array($this, 'getTinyMCEEnabledFields'));
+			//HookRegistry::register('TinyMCEPlugin::getEnableFields', array($this, 'getTinyMCEEnabledFields'));
+			//Hook::add('TinyMCEPlugin::getEnableFields', array($this, 'getTinyMCEEnabledFields')); //check this again, may be deprecated
 
 		}
 		return $success;
@@ -110,7 +124,7 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 */
 	function getActions($request, $verb) {
 		$router = $request->getRouter();
-		import('lib.pkp.classes.linkAction.request.AjaxModal');
+		//import('lib.pkp.classes.linkAction.request.AjaxModal');
 		return array_merge(
 			$this->getEnabled()?array(
 				new LinkAction(
@@ -135,31 +149,32 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 	 */
 	function insertWidget($hookName, $params) {
 		$output =& $params[2];
-		$templateMgr = TemplateManager::getManager();
+		//$templateMgr = TemplateManager::getManager();
 		
 		$request = $this->getRequest();
+		$templateMgr = TemplateManager::getManager($request);
 		$context = $request->getContext();
 		$doi = $this->getSubmissionDOI($templateMgr, $context->getId(), $hookName);
 		if ($doi) {
 			if ($hookName == 'Templates::Article::Footer::PageFooter') {
-				if (method_exists($this, 'getTemplateResource')) {
+				//if (method_exists($this, 'getTemplateResource')) {
 					// OJS 3.1.2+
 					$target = $this->getTemplateResource('pageTagPlumScript.tpl');
-				} else {
-					// before OJS 3.1.2
-					$target = $this->getTemplatePath() . 'pageTagPlumScript.tpl';
-				}
+				// } else {
+				// 	// before OJS 3.1.2
+				// 	$target = $this->getTemplatePath() . 'pageTagPlumScript.tpl';
+				// }
 				$output .= $templateMgr->fetch($target);
 			}
 			if ($this->availableHooks[$this->getSetting($context->getId(), 'hook')] == $hookName) {
 				$this->setupTemplateManager($context->getId(), $doi, $templateMgr);
-				if (method_exists($this, 'getTemplateResource')) {
+				//if (method_exists($this, 'getTemplateResource')) {
 					// OJS 3.1.2+
 					$target = $this->getTemplateResource('pageTagPlumWidget.tpl');
-				} else {
-					// before OJS 3.1.2
-					$target = $this->getTemplatePath() . 'pageTagPlumWidget.tpl';
-				}
+				// } else {
+				// 	// before OJS 3.1.2
+				// 	$target = $this->getTemplatePath() . 'pageTagPlumWidget.tpl';
+				// }
 				$output .= $templateMgr->fetch($target);
 			}
 		}
@@ -186,13 +201,13 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 			// database setting is stored without "plum" prefix, e.g. plumSettingName is settingName
 			$templateMgr->assign($k, $this->getSetting($contextId, lcfirst(substr($k, 4))));
 		}
-		if (method_exists($this, 'getTemplateResource')) {
+		//if (method_exists($this, 'getTemplateResource')) {
 			// OJS 3.1.2+
 			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplateResource('pageTagPlumWidget.tpl'));
-		} else {
-			// before OJS 3.1.2
-			$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath(). 'pageTagPlumWidget.tpl');
-		}
+		// } else {
+		// 	// before OJS 3.1.2
+		// 	$templateMgr->assign('plumWidgetTemplatePath', $this->getTemplatePath(). 'pageTagPlumWidget.tpl');
+		// }
 	}
 
 	/**
@@ -248,11 +263,12 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		$verb = $request->getUserVar('verb');
 		switch ($verb) {
 			case 'settings':
-				$templateMgr = TemplateManager::getManager();
-				$templateMgr->register_function('plugin_url', array($this, 'smartyPluginUrl'));
+				$templateMgr = TemplateManager::getManager($request);
+				//$templateMgr->register_function('plugin_url', array($this, 'smartyPluginUrl'));
+				$templateMgr->registerPlugin('function', 'plugin_url', array($this, 'smartyPluginUrl'));
 				$context = $request->getContext();
 
-				$this->import('PlumAnalyticsSettingsForm');
+				//$this->import('PlumAnalyticsSettingsForm');
 				$form = new PlumAnalyticsSettingsForm($this, $context->getId());
 				if ($request->getUserVar('save')) {
 					$form->readInputData();
