@@ -12,7 +12,7 @@
  * @brief Class for Plum Analytics block plugin
  */
 namespace APP\plugins\generic\plumAnalytics;
-//import('lib.pkp.classes.plugins.BlockPlugin');
+
 use PKP\plugins\BlockPlugin;
 use PKP\config\Config;
 use PKP\plugins\PluginRegistry;
