@@ -82,7 +82,6 @@ class PlumAnalyticsPlugin extends GenericPlugin {
 		if ($success && $this->getEnabled()) {
 			// Attach to any possible hook; actual widget hook and script hook will be determined by insertWidget()
 			foreach ($this->availableHooks as $k => $v) {
-				//HookRegistry::register($v, array($this, 'insertWidget'));
 				Hook::add($v, array($this, 'insertWidget'));
 			}
 
