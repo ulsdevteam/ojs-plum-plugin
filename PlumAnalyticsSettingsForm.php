@@ -11,9 +11,12 @@
  *
  * @brief Form for journal managers to modify Plum Analytics plugin settings
  */
+namespace APP\plugins\generic\plumAnalytics;
 
-
-import('lib.pkp.classes.form.Form');
+use PKP\form\Form;
+use PKP\form\validation\FormValidator;
+use PKP\form\validation\FormValidatorPost;
+use APP\template\TemplateManager;
 
 class PlumAnalyticsSettingsForm extends Form {
 
