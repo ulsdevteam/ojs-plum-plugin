@@ -4,7 +4,7 @@ This plugin provides display of PlumX Metrics from [Plum Analytics](http://pluma
 
 ## Requirements
 
-* OJS 3.2 or later
+* OJS 3.4 or later
 * Article level DOIs
   * see: Login -> Settings -> Website -> Plugins -> DOI
 * PlumX tracking of the artifacts with those DOIs
@@ -42,6 +42,6 @@ To configure the plugin, you will need to select what type of widget you want, a
 
 ## Author / License
 
-Written by Clinton Graham for the [University of Pittsburgh](http://www.pitt.edu).  Copyright (c) University of Pittsburgh.
+Written by Clinton Graham and Tazio Polanco for the [University of Pittsburgh](http://www.pitt.edu).  Copyright (c) University of Pittsburgh.
 
 Released under a license of GPL v2 or later.
